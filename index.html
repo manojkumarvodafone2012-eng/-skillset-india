@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SkillSet India</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f6f7fb;color:#20213a}
+header{background:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.logo{font-size:22px;font-weight:bold;color:#6941e8}
+nav a{margin:6px;color:#333;text-decoration:none}
+.hero{background:linear-gradient(135deg,#17143b,#7048f4);color:white;text-align:center;padding:55px 16px}
+.hero h1{font-size:clamp(32px,7vw,50px);margin:0 0 15px}
+.hero p{line-height:1.7;color:#e4dfff}
+.search{display:flex;gap:8px;max-width:500px;margin:24px auto}
+input{flex:1;min-width:0;padding:13px;border:0;border-radius:8px;font-size:15px}
+button{padding:11px 15px;border:0;border-radius:8px;background:#6941e8;color:white;font-weight:bold;cursor:pointer}
+section{padding:35px 5%}
+.sub{color:#777}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0}
+.filters button{background:white;color:#6941e8;border:1px solid #ddd}
+.filters button.active{background:#6941e8;color:white}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:17px;margin-top:20px}
+.card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 4px 16px #00000010}
+.art{height:120px;display:grid;place-items:center;font-size:52px;background:linear-gradient(135deg,#e9e2ff,#d9f8ef)}
+.content{padding:16px}
+.tag{font-size:12px;color:#6941e8;background:#eee8ff;padding:5px 9px;border-radius:20px}
+.card h3{margin:15px 0 8px}
+.card p{font-size:14px;color:#777;line-height:1.5}
+.bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:15px}
+.price{font-weight:bold;color:#6941e8}
+.about{background:#eeeaff;line-height:1.8}
+footer{background:#17143b;color:white;text-align:center;padding:28px 12px}
+footer p{font-size:13px;color:#ddd}
+#empty{padding:20px}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">SkillSet India 🎓</div>
+<nav>
+<a href="#home">Home</a>
+<a href="#courses">Courses</a>
+<a href="#about">About</a>
+</nav>
+</header>
+
+<div class="hero" id="home">
+<h1>Learn Skills.<br>Build Your Future.</h1>
+<p>Discover your talent. Learn new skills. Create your future.</p>
+<div class="search">
+<input id="search" placeholder="Search a skill..." oninput="renderCourses()">
+<button onclick="renderCourses()">Search</button>
+</div>
+</div>
+
+<section id="courses">
+<h2>Explore Popular Courses 🚀</h2>
+<p class="sub">Choose your favourite skill and get started.</p>
+<div class="filters">
+<button class="active" onclick="setCategory('All',this)">All</button>
+<button onclick="setCategory('Coding',this)">Coding</button>
+<button onclick="setCategory('Design',this)">Design</button>
+<button onclick="setCategory('Video Editing',this)">Video Editing</button>
+<button onclick="setCategory('Marketing',this)">Marketing</button>
+<button onclick="setCategory('AI Tools',this)">AI Tools</button>
+</div>
+<div class="grid" id="grid"></div>
+<p id="empty" hidden>No courses found. Try another search.</p>
+</section>
+
+<section class="about" id="about">
+<h2>About SkillSet India 💡</h2>
+<p>Welcome to SkillSet India, a learning platform for discovering useful skills. Explore coding, graphic design, video editing, digital marketing and AI tools. Start learning and keep improving every day!</p>
+</section>
+
+<footer>
+<h3>SkillSet India 🎓</h3>
+<p>Learn Today. Grow Tomorrow.</p>
+<p>© 2026 SkillSet India</p>
+</footer>
+
+<script>
+const courses=[
+{title:"Web Development",cat:"Coding",icon:"💻",desc:"Discover HTML, CSS and JavaScript."},
+{title:"Python for Beginners",cat:"Coding",icon:"🐍",desc:"Explore programming fundamentals."},
+{title:"Graphic Design",cat:"Design",icon:"🎨",desc:"Learn creative design basics."},
+{title:"Logo Design",cat:"Design",icon:"✨",desc:"Explore logos and branding."},
+{title:"Video Editing",cat:"Video Editing",icon:"🎬",desc:"Discover video editing techniques."},
+{title:"YouTube Shorts Editing",cat:"Video Editing",icon:"📱",desc:"Explore short-form video creation."},
+{title:"Digital Marketing",cat:"Marketing",icon:"📈",desc:"Understand online marketing."},
+{title:"Social Media Skills",cat:"Marketing",icon:"🌐",desc:"Learn content planning basics."},
+{title:"AI Tools for Beginners",cat:"AI Tools",icon:"🤖",desc:"Discover useful AI tools."},
+{title:"AI Image Creation",cat:"AI Tools",icon:"🖼️",desc:"Explore AI-assisted creativity."}
+];
+let category="All";
+
+function setCategory(value,button){
+category=value;
+document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+button.classList.add("active");
+renderCourses();
+}
+
+function renderCourses(){
+const query=document.getElementById("search").value.toLowerCase().trim();
+const filtered=courses.filter(c=>
+(category==="All"||c.cat===category)&&
+(c.title+" "+c.cat+" "+c.desc).toLowerCase().includes(query)
+);
+document.getElementById("grid").innerHTML=filtered.map(c=>`
+<div class="card">
+<div class="art">${c.icon}</div>
+<div class="content">
+<span class="tag">${c.cat}</span>
+<h3>${c.title}</h3>
+<p>${c.desc}</p>
+<div class="bottom">
+<span class="price">Free demo</span>
+<button onclick="alert('This is a demo. Course lessons are not available yet.')">Explore</button>
+</div>
+</div>
+</div>`).join("");
+document.getElementById("empty").hidden=filtered.length!==0;
+}
+renderCourses();
+</script>
+</body>
+</html>
